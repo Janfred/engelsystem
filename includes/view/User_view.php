@@ -175,7 +175,8 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
   return page_with_title(_("All users"), [
       msg(),
       buttons([
-          button(page_link_to('register'), glyph('plus') . _("New user")) 
+          button(page_link_to('register'), glyph('plus') . _("New user")) ,
+          button(page_link_to('ldap_import'), glyph('plus') . _("Import from LDAP"))
       ]),
       table([
           'Nick' => Users_table_header_link('Nick', _("Nick"), $order_by),

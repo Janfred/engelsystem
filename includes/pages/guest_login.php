@@ -12,6 +12,35 @@ function logout_title() {
   return _("Logout");
 }
 
+function ldap_import_title() {
+  return _("LDAP-Import");
+}
+function ldap_import_register() {
+  $nick = "";
+  if (isset($_REQUEST['submit'])) {
+    if (isset($_REQUEST['nick'])) {
+      $nick = User_validate_Nick($_REQUEST['nick']);
+      if (check_user_existence($nick)){
+        $login_users = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
+        if (count($login_users) > 0) {
+          error(_("Nick already exists"));
+        } else {
+          register_ldap_user($nick);
+          success(_("Successfully imported"));
+        }
+      } else {
+        error(_("No user was found with that Nickname"));
+      }
+    }
+  }
+  return page([
+    form([
+      form_text_placeholder('nick', _("Nick"), $nick),
+      form_submit('submit', _("Import"))
+    ])
+  ]);
+}
+
 // Engel registrieren
 function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $default_theme, $user, $min_password_length;
@@ -51,7 +80,7 @@ function guest_register() {
     
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 1) {
       $nick = User_validate_Nick($_REQUEST['nick']);
-      if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
+      if (check_user_existence($nick)) {
         $valid = false;
         $msg .= error(sprintf(_("Your nick &quot;%s&quot; already exists."), $nick), true);
       }
@@ -394,6 +423,7 @@ function guest_login() {
       ]) 
   ]);
 }
+
 
 function get_register_hint() {
   global $privileges;

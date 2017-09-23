@@ -56,7 +56,7 @@ function user_delete_controller() {
   if (isset($_REQUEST['submit'])) {
     $valid = true;
     
-    if (! (isset($_REQUEST['password']) && verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))) {
+    if (! (isset($_REQUEST['password']) && !verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))) {
       $valid = false;
       error(_("Your password is incorrect.  Please try it again."));
     }

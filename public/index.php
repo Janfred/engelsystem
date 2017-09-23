@@ -102,6 +102,9 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($page == "register") {
     $title = register_title();
     $content = guest_register();
+  } elseif ($page == "ldap_import") {
+    $title = ldap_import();
+    $content = ldap_import_register();
   } elseif ($page == "logout") {
     $title = logout_title();
     $content = guest_logout();
