@@ -51,7 +51,7 @@ function check_user_existence($nick) {
   global $ldap;
   $db = sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0;
   if ($db) { return true; }
-  if (isset($ldap && $ldap['enabled'] == 1 && $ldap['verify_nicks']) {
+  if (isset($ldap) && $ldap['enabled'] == 1 && $ldap['verify_nicks']) {
     $ldap_conn = create_ldap_connection();
     $bind = @ldap_bind($ldap_conn, $ldap['bind_user'], $ldap['bind_pass']);
     $result = ldap_search($ldap_conn, $ldap['base_dn'], str_replace("%nick%", $nick, $ldap['search_filter']));

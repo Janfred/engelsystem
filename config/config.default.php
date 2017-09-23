@@ -76,6 +76,7 @@ $ldap = [
     'bind_pw' => "", # Leave empty for anonymous bind, only used for account lookup
     'search_filter' => "(uid=%nick%)", # Search filter, use %nick% as placeholder for username
     'starttls' => true, # Use Starttls for ldap connection
+    'verify_nicks' => true, # Verify new registers
     'entries' => [ # Mapping to ldap attributes
        'email' => "mail",
        'prename' => "givenname",
