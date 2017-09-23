@@ -306,11 +306,24 @@ function guest_login() {
     
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
       $nick = User_validate_Nick($_REQUEST['nick']);
-      $login_user = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
-      if (count($login_user) > 0) {
-        $login_user = $login_user[0];
+      $user_exists = check_user_existence($nick);
+      $login_user = null;
+      if ($user_exists) {
         if (isset($_REQUEST['password'])) {
-          if (! verify_password($_REQUEST['password'], $login_user['Passwort'], $login_user['UID'])) {
+          $login_users = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
+          $check_password = "*ldap*";
+          if (count($login_users) > 0) {
+            $login_user = $login_users[0];
+            $check_password = $login_user['Passwort'];
+          }
+          if ( verify_password($_REQUEST['password'], $check_password, $nick)) {
+            $valid = true;
+            if ( count($login_users) <= 0) {
+              register_ldap_user($nick);
+              $login_users = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
+              $login_user = login_users[0];
+            }
+          } else {
             $valid = false;
             error(_("Your password is incorrect.  Please try it again."));
           }

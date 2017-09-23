@@ -67,4 +67,20 @@ $config = [
     'pw' => "",
     'db' => "engelsystem"
 ];
+
+$ldap = [
+    'enabled' => 0, # Change to 1 if you want to enable LDAP support
+    'server' => "ldaps://localhost/", # LDAP Host (for tcp connection use format "ldap[s]://<host>:<port>/" )
+    'base_dn' => "ou=People,dc=example,dc=com", # Base DN for all people
+    'bind_user' => "", # Leave empty for anonymous bind, only used for account lookup
+    'bind_pw' => "", # Leave empty for anonymous bind, only used for account lookup
+    'search_filter' => "(uid=%nick%)", # Search filter, use %nick% as placeholder for username
+    'starttls' => true, # Use Starttls for ldap connection
+    'entries' => [ # Mapping to ldap attributes
+       'email' => "mail",
+       'prename' => "givenname",
+       'lastname' => "sn"
+    ]
+];
+
 ?>
