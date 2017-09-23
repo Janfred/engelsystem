@@ -124,7 +124,7 @@ function create_ldap_connection() {
   $ldap_conn = ldap_connect($ldap['server']);
   ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
   ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
-  if (isset($ldap['starttls'] && $ldap['starttls']) {
+  if (isset($ldap['starttls']) && $ldap['starttls']) {
     ldap_start_tls($ldap_conn);
   }
   return $ldap_conn;
